@@ -122,7 +122,7 @@ with DAG('air_quality_index',
         task_3 = PythonOperator(
             task_id = 'load_json_file',
             provide_context = True,
-            python_callable = load_json_file
+            python_callable = load_json_file,
             dag = dag
         )
 
