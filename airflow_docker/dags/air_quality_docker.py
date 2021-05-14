@@ -8,13 +8,14 @@ from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
 from airflow.operators.python_operator import PythonOperator
 from airflow.utils.trigger_rule import TriggerRule
+from airflow.utils.dates import days_ago
 
 def print_world():
     print('Hellow world')
 
 def data_save():
     df = pd.DataFrame(np.arange(48).reshape(8,6),columns=list('ABCDEF'))
-    df.to_csv('/usr/local/airflow/dags/test_file.csv', sep=',', header=True)
+    df.to_csv('/opt/airflow/dags/test_file.csv', sep=',', header=True)
 
 def air_quality_index():
     url = 'https://api.data.gov.in/resource/3b01bcb8-0b14-4abf-b6f2-c1bfd384ba69'
@@ -28,22 +29,21 @@ def air_quality_index():
     r = rq.get(url, params=payload)
     json_data = r.json()['records']
     df_aq = pd.DataFrame(json_data)
-    if not os.path.isfile('/usr/local/airflow/dags/air_quality_index.csv'):
-        df_aq.to_csv('/usr/local/airflow/dags/air_quality_index.csv', sep=',', header=True)
+    if not os.path.isfile('/opt/airflow/dags/air_quality_index.csv'):
+        df_aq.to_csv('/opt/airflow/dags/air_quality_index.csv', sep=',', header=True)
     else :
-        df_aq.to_csv('/usr/local/airflow/dags/air_quality_index.csv', sep=',', header=False, mode='a')
+        df_aq.to_csv('/opt/airflow/dags/air_quality_index.csv', sep=',', header=False, mode='a')
 
 default_args = {
     'owner': 'Sivakguru',
-    'start_date': dt.datetime(2021, 2, 9, 13, 9),
+    'start_date': days_ago(1),
     'retries': 1,
     'retry_delay': dt.timedelta(minutes=1),
 }
 
-
 with DAG('air_quality_docker',
          default_args=default_args,
-         schedule_interval='@hourly',
+         schedule_interval='@daily',
          ) as dag:
 
         t1 = BashOperator(
