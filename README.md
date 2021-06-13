@@ -120,5 +120,5 @@ For our installation, we'll need to run three Airflow services: the Webserver, t
 ```bash
 airflow webserver --daemon
 airflow scheduler --daemon
-airflow worker --daemon
+airflow celery worker --daemon
 ```
