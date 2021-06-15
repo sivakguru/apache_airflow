@@ -136,3 +136,6 @@ ps -eaf | grep airflow
 # Kill the process
 kill -9 {PID}
 ```
+
+link
+http://site.clairvoyantsoft.com/installing-and-configuring-apache-airflow/
