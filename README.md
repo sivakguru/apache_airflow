@@ -122,3 +122,17 @@ airflow webserver --daemon
 airflow scheduler --daemon
 airflow celery worker --daemon
 ```
+
+### **Stop the services**
+---
+for stopping the servies, first find the PID's and run KILL command
+
+```bash
+# Get the PID of the service you want to stop
+ps -eaf | grep airflow
+```
+
+```bash
+# Kill the process
+kill -9 {PID}
+```
